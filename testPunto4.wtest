@@ -1,0 +1,32 @@
+import empleados.*
+
+describe "Parte 4. Saldos insuficientes" {
+    test "Caso Baigorria" {
+        baigorria.venderEmpanadas(5000)
+        gimenez.pagarSueldo(baigorria)
+        assert.equals(75000, baigorria.totalSueldoCobrado())
+        assert.equals(225000, gimenez.fondoParaSueldos())
+
+        baigorria.venderEmpanadas(6000)
+        gimenez.pagarSueldo(baigorria)
+        assert.equals(165000, baigorria.totalSueldoCobrado())
+        assert.equals(135000, gimenez.fondoParaSueldos())
+
+        baigorria.venderEmpanadas(10000)
+        assert.throwsException({gimenez.pagarSueldo(baigorria)})
+    }
+
+    test "Caso Galván" {
+        gimenez.pagarSueldo(galvan)
+        assert.equals(15000, galvan.dinero())
+        assert.equals(285000, gimenez.fondoParaSueldos())
+
+        galvan.sueldo(180000)
+        gimenez.pagarSueldo(galvan)
+        assert.equals(195000, galvan.dinero()) 
+        assert.equals(105000, gimenez.fondoParaSueldos())
+
+        galvan.sueldo(120000)
+        assert.throwsException({ gimenez.pagarSueldo(galvan) })
+    }
+}

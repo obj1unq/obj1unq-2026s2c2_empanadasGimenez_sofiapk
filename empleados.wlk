@@ -12,7 +12,7 @@ object galvan {
     method saldo() = saldo
 
     // setter - permite un cambio de sueldo de Galván 
-    method sueldoNuevo(_sueldoNuevo){
+    method sueldo(_sueldoNuevo){
         sueldo = _sueldoNuevo
     }
 
@@ -26,7 +26,9 @@ object galvan {
         saldo += self.sueldo()
     }
 
-    method deuda() = saldo.min(0).abs()
+    method dinero() = saldo.max(0)
+
+    method deuda() = saldo.min(0).abs() // si el saldo es negativo devuelve el valor absoluto, si es positivo devuelve 0
 
     method gastar(monto) {
         //if ( self.dinero() >= monto){
@@ -61,7 +63,6 @@ object baigorria {
     }
 }
 
-
 object gimenez {
     var fondoParaSueldos = 300000
 
@@ -69,10 +70,16 @@ object gimenez {
     method fondoParaSueldos() = fondoParaSueldos
 
     method pagarSueldo(empleado) {
-        fondoParaSueldos = fondoParaSueldos - empleado.sueldo()
-        empleado.cobrarSueldo() // corresponde a este objeto ?
+        self.validarPagoDeSueldo(empleado)
+        fondoParaSueldos -= empleado.sueldo()
+        empleado.cobrarSueldo()
     }
 
+    method validarPagoDeSueldo(empleado) {
+        if (fondoParaSueldos < empleado.sueldo()){
+            self.error("No hay dinero suficiente para pagar sueldos")
+        }
+    }
 }
 
 /*
@@ -83,7 +90,6 @@ Para pensar: ¿qué mensajes entiende cada uno?
 Polimorfismo entre Baigorria y Galván: ambos entienden los mensajes sueldo() y cobrarSueldo() 
 y esto permite que Gimenez pueda interactuar con ellos (sin importar o saber cuál de ellos es) a través  
 de empleado.sueldo() y empleado.cobrarSueldo() en el método pagarSueldo(empleado). 
-
 
 ¿qué efecto produce al utilizar ambos objetos en el REPL?
     Podemos ver cómo va cambiando el estado interno de cada uno de los objetos
