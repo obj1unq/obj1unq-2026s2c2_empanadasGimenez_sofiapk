@@ -69,15 +69,20 @@ object gimenez {
     // getter
     method fondoParaSueldos() = fondoParaSueldos
 
+    method fondoParaSueldos(_fondoParaSueldos){
+
+        fondoParaSueldos = _fondoParaSueldos
+    }
+
     method pagarSueldo(empleado) {
-        self.validarPagoDeSueldo(empleado)
+        self.validarPago(empleado.sueldo()) // generalizar
         fondoParaSueldos -= empleado.sueldo()
         empleado.cobrarSueldo()
     }
 
-    method validarPagoDeSueldo(empleado) {
-        if (fondoParaSueldos < empleado.sueldo()){
-            self.error("No hay dinero suficiente para pagar sueldos")
+    method validarPago(empleado) {
+        if (fondoParaSueldos < empleado){
+            self.error("No hay dinero suficiente para realizar el pago")
         }
     }
 }
